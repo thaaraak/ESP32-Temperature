@@ -43,6 +43,7 @@ void app_main(void)
     	uint16_t adcval = adc.readADC_SingleEnded(0);
     	float volts = adc.computeVolts(adcval);
 
+
     	uint16_t adcval1 = adc.readADC_SingleEnded(1);
     	float tempvolts = adc.computeVolts(adcval1);
     	float temp = 25 + ( tempvolts - .750 ) / .01;
