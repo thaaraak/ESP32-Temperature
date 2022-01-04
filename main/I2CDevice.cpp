@@ -58,9 +58,10 @@ uint8_t I2CDevice::read(uint8_t reg)
 
 uint8_t I2CDevice::read_bulk(uint8_t reg, uint8_t* buffer, int len )
 {
+	/*
 		if ( reg == 0 )
 			printf( "Reading register (len=%d): [%d] = ", len, reg );
-
+*/
 	    int ret;
 	    i2c_cmd_handle_t cmd = i2c_cmd_link_create();
 
@@ -81,9 +82,9 @@ uint8_t I2CDevice::read_bulk(uint8_t reg, uint8_t* buffer, int len )
 
 	    ret = i2c_master_cmd_begin(_i2c_num	, cmd, 1000 / portTICK_RATE_MS);
 	    i2c_cmd_link_delete(cmd);
-
+/*
 		if ( reg == 0 )
 			printf( "%d %d\n", buffer[0], buffer[1] );
-
+*/
 	    return (buffer[0]);
 }
