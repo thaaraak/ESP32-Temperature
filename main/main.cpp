@@ -65,7 +65,7 @@ void initializeSPI( int mosi, int miso, int clk, int cs )
 
    	devcfg.address_bits = 8;
     devcfg.mode= 1;
-	devcfg.clock_speed_hz = 10000;
+	devcfg.clock_speed_hz = 400000;
 
 	//devcfg.spics_io_num=cs;
 	devcfg.spics_io_num=-1;
@@ -146,12 +146,11 @@ void app_main(void)
     	//uint16_t rtd1 = tempSensor.readRTD();
 
     	float val = tempSensor.temperature(RNOMINAL, RREF);
-
     	float ratio = rtd;
     	ratio /= 32768;
     	float test = RREF*ratio;
 
-    	//printf( "Sensor: %5d Temp: %7.4f Ratio: %7.4f\n", rtd, val, test );
+    	//printf( "Sensor: %d Temp: %12.4f Ratio: %12.4f\n", rtd, val, test );
 
     	printf( "Temperature: (TMP36) %7.4f (MAX31865) %7.4f\n", temp, val );
 
