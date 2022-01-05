@@ -65,7 +65,7 @@ void initializeSPI( int mosi, int miso, int clk, int cs )
 
    	devcfg.address_bits = 8;
     devcfg.mode= 1;
-	devcfg.clock_speed_hz = 100000;
+	devcfg.clock_speed_hz = 10000;
 
 	devcfg.spics_io_num=cs;
 	devcfg.spics_io_num=-1;
@@ -138,15 +138,16 @@ void app_main(void)
     	float temp = 25 + ( tempvolts - .750 ) / .01;
 
     	//printf( "ADC: %d %7.5f %7.5f\n", adcval1, temp, tempvolts );
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
+        vTaskDelay(2000 / portTICK_PERIOD_MS);
 
     	uint16_t rtd = tempSensor.readRTD();
-    	printf( "Sensor: %d\n", rtd );
 
     	float ratio = rtd;
     	ratio /= 32768;
-    	printf("Resistance = %7.2f\n", RREF*ratio );
-    	printf("Temperature = %7.2f\n", tempSensor.temperature(RNOMINAL, RREF) );
+    	printf("Sensor = %d Resistance = %7.5f Temp=%7.5f\n",
+    			rtd,
+    			RREF*ratio,
+				tempSensor.temperature(RNOMINAL, RREF) );
     }
 
 }

@@ -65,7 +65,8 @@ bool Adafruit_MAX31865::begin(max31865_numwires_t wires) {
   vTaskDelay(30 / portTICK_PERIOD_MS);
 
   setWires(wires);
-  enableBias(false);
+  //enableBias(false);
+  enableBias(true);
   autoConvert(false);
   clearFault();
 
@@ -235,19 +236,20 @@ uint16_t Adafruit_MAX31865::readRTD(void)
 	clearFault();
 
 	//printf( "Enable Bias True\n");
-	enableBias(true);
-	vTaskDelay(100 / portTICK_PERIOD_MS);
+	//enableBias(true);
+	//vTaskDelay(100 / portTICK_PERIOD_MS);
 
 	//printf( "Config 1 Shot\n");
 	uint8_t t = readRegister8(MAX31865_CONFIG_REG);
 	t |= MAX31865_CONFIG_1SHOT;
 	writeRegister8(MAX31865_CONFIG_REG, t);
-	vTaskDelay(100 / portTICK_PERIOD_MS);
+	//vTaskDelay(100 / portTICK_PERIOD_MS);
 
 	//printf( "Reading RTDMSB\n");
 	uint16_t rtd = readRegister16(MAX31865_RTDMSB_REG);
+	//uint16_t rtdlow = readRegister(MAX31865_RTDLSB_REG);
 
-	enableBias(false); // Disable bias current again to reduce selfheating.
+	//enableBias(false); // Disable bias current again to reduce selfheating.
 
   // remove fault
   rtd >>= 1;
@@ -349,17 +351,20 @@ void Adafruit_MAX31865::readRegisterN(uint8_t reg, uint8_t buffer[], uint8_t len
 	if (err != ESP_OK)
 	    ESP_LOGE(TAG, "Error adding SPI device: %s", esp_err_to_name(err));
 
-	memcpy(buffer, transaction.rx_data, len);
-	/*
-	printf("Reading Register len:(%d) rx:(%d) [%02x]=[", len, transaction.rxlength, reg );
-
-	for ( int i = 0 ; i < len ; i++ )
-		printf("%02x:", transaction.rx_data[i]);
-
-	printf( "]\n");
-	*/
-
 	gpio_set_level(PIN_NUM_CS, 1);
+
+	memcpy(buffer, transaction.rx_data, len);
+
+	if ( len > 1 ) {
+		printf("Reading Register len:(%d) rx:(%d) [%02x]=[", len, transaction.rxlength, reg );
+
+		for ( int i = 0 ; i < len ; i++ )
+			printf("%02x:", transaction.rx_data[i]);
+
+		printf( "]\n");
+	}
+
+
 
 }
 
