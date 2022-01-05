@@ -355,7 +355,7 @@ void Adafruit_MAX31865::readRegisterN(uint8_t reg, uint8_t buffer[], uint8_t len
 
 	memcpy(buffer, transaction.rx_data, len);
 
-	/*
+
 	if ( len > 1 ) {
 		printf("Reading Register len:(%d) rx:(%d) [%02x]=[", len, transaction.rxlength, reg );
 
@@ -364,7 +364,7 @@ void Adafruit_MAX31865::readRegisterN(uint8_t reg, uint8_t buffer[], uint8_t len
 
 		printf( "]\n");
 	}
-*/
+
 
 
 }
