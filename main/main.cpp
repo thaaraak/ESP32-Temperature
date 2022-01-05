@@ -16,7 +16,7 @@
 #include "Adafruit_ADS1X15.h"
 #include "Adafruit_MAX31865.h"
 
-#define I2C_MASTER_NUM	0
+#define I2C_MASTER_NUM	1
 #define I2C_MASTER_SDA_IO 26
 #define I2C_MASTER_SCL_IO 27
 
@@ -67,7 +67,7 @@ void initializeSPI( int mosi, int miso, int clk, int cs )
     devcfg.mode= 1;
 	devcfg.clock_speed_hz = 10000;
 
-	devcfg.spics_io_num=cs;
+	//devcfg.spics_io_num=cs;
 	devcfg.spics_io_num=-1;
 
 	devcfg.flags = SPI_DEVICE_HALFDUPLEX;
@@ -76,14 +76,12 @@ void initializeSPI( int mosi, int miso, int clk, int cs )
 
     ret=spi_bus_initialize(SPI2_HOST, &buscfg, 1);
     ESP_ERROR_CHECK(ret);
-    printf("Bus Init: %d\n", ret);
 
     if ( ret > 0 )
     	return;
 
     ret=spi_bus_add_device(SPI2_HOST, &devcfg, &_spi);
     ESP_ERROR_CHECK(ret);
-    printf("Add device: %d\n", ret);
 
 
 }
@@ -98,7 +96,7 @@ static esp_err_t i2c_master_init(void)
     conf.sda_pullup_en = GPIO_PULLUP_ENABLE;
     conf.scl_io_num = I2C_MASTER_SCL_IO;
     conf.scl_pullup_en = GPIO_PULLUP_ENABLE;
-    conf.master.clk_speed = 100000;
+    conf.master.clk_speed = 400000;
     i2c_param_config(i2c_master_port, &conf);
 
     return i2c_driver_install(i2c_master_port, conf.mode, 0, 0, 0);
@@ -111,6 +109,7 @@ void app_main(void)
 	i2c_master_init();
 	initializeSPI( PIN_NUM_MOSI, PIN_NUM_MISO, PIN_NUM_CLK, PIN_NUM_CS );
 
+
     gpio_pad_select_gpio(PIN_NUM_CS);
     gpio_set_direction(PIN_NUM_CS, GPIO_MODE_OUTPUT);
 
@@ -118,9 +117,11 @@ void app_main(void)
     vTaskDelay(10 / portTICK_PERIOD_MS);
 	gpio_set_level(PIN_NUM_CS, 1);
 
+
 	Adafruit_ADS1115 adc;
 	adc.begin( I2C_MASTER_NUM );
 	adc.setGain(GAIN_ONE);
+
 
 	Adafruit_MAX31865 tempSensor ( _spi );
 	tempSensor.begin(MAX31865_3WIRE);
@@ -138,16 +139,24 @@ void app_main(void)
     	float temp = 25 + ( tempvolts - .750 ) / .01;
 
     	//printf( "ADC: %d %7.5f %7.5f\n", adcval1, temp, tempvolts );
-        vTaskDelay(2000 / portTICK_PERIOD_MS);
+
+
 
     	uint16_t rtd = tempSensor.readRTD();
+    	//uint16_t rtd1 = tempSensor.readRTD();
+
+    	float val = tempSensor.temperature(RNOMINAL, RREF);
 
     	float ratio = rtd;
     	ratio /= 32768;
-    	printf("Sensor = %d Resistance = %7.5f Temp=%7.5f\n",
-    			rtd,
-    			RREF*ratio,
-				tempSensor.temperature(RNOMINAL, RREF) );
+    	float test = RREF*ratio;
+
+    	//printf( "Sensor: %5d Temp: %7.4f Ratio: %7.4f\n", rtd, val, test );
+
+    	printf( "Temperature: (TMP36) %7.4f (MAX31865) %7.4f\n", temp, val );
+
+    	vTaskDelay(2000 / portTICK_PERIOD_MS);
+
     }
 
 }

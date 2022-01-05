@@ -71,7 +71,7 @@ bool Adafruit_MAX31865::begin(max31865_numwires_t wires) {
   clearFault();
 
   uint8_t t = readRegister8(MAX31865_CONFIG_REG);
-  printf( "**** Config ****  [%d]\n", t );
+  //printf( "**** Config ****  [%d]\n", t );
 
   return true;
 }
@@ -164,7 +164,7 @@ void Adafruit_MAX31865::setWires(max31865_numwires_t wires) {
     t &= ~MAX31865_CONFIG_3WIRE;
   }
 
-  printf( "Setting Wires to: %d\n", t );
+  //printf( "Setting Wires to: %d\n", t );
   writeRegister8(MAX31865_CONFIG_REG, t);
   t = readRegister8(MAX31865_CONFIG_REG);
 
@@ -355,6 +355,7 @@ void Adafruit_MAX31865::readRegisterN(uint8_t reg, uint8_t buffer[], uint8_t len
 
 	memcpy(buffer, transaction.rx_data, len);
 
+	/*
 	if ( len > 1 ) {
 		printf("Reading Register len:(%d) rx:(%d) [%02x]=[", len, transaction.rxlength, reg );
 
@@ -363,7 +364,7 @@ void Adafruit_MAX31865::readRegisterN(uint8_t reg, uint8_t buffer[], uint8_t len
 
 		printf( "]\n");
 	}
-
+*/
 
 
 }
