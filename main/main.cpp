@@ -136,7 +136,7 @@ void app_main(void)
 
     	uint16_t adcval1 = adc.readADC_SingleEnded(1);
     	float tempvolts = adc.computeVolts(adcval1);
-    	float temp = 25 + ( tempvolts - .750 ) / .01;
+    	float tempTMP36 = 25 + ( tempvolts - .750 ) / .01;
 
     	//printf( "ADC: %d %7.5f %7.5f\n", adcval1, temp, tempvolts );
 
@@ -145,14 +145,14 @@ void app_main(void)
     	uint16_t rtd = tempSensor.readRTD();
     	//uint16_t rtd1 = tempSensor.readRTD();
 
-    	float val = tempSensor.temperature(RNOMINAL, RREF);
+    	float tempMAX31865 = tempSensor.temperature(RNOMINAL, RREF);
     	float ratio = rtd;
     	ratio /= 32768;
     	float test = RREF*ratio;
 
     	//printf( "Sensor: %d Temp: %12.4f Ratio: %12.4f\n", rtd, val, test );
 
-    	printf( "Temperature: (TMP36) %7.4f (MAX31865) %7.4f\n", temp, val );
+    	printf( "Temperature: (TMP36) %7.4f (MAX31865) %7.4f\n", tempTMP36, tempMAX31865 );
 
     	vTaskDelay(2000 / portTICK_PERIOD_MS);
 
