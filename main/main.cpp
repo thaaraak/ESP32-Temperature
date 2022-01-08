@@ -153,7 +153,7 @@ void app_main(void)
     	//printf( "Sensor: %d Temp: %12.4f Ratio: %12.4f\n", rtd, tempMAX31865, rtd / 32768.0 * RREF );
     	printf( "Temp: (TMP36) %7.4f (MAX31865) %7.4f\n", tempTMP36, tempMAX31865 );
 
-    	vTaskDelay(5000 / portTICK_PERIOD_MS);
+    	vTaskDelay(300 / portTICK_PERIOD_MS);
 
     }
 
