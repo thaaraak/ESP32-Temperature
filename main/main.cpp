@@ -65,7 +65,7 @@ void initializeSPI( int mosi, int miso, int clk, int cs )
 
    	devcfg.address_bits = 8;
     devcfg.mode= 1;
-	devcfg.clock_speed_hz = 10000;
+	devcfg.clock_speed_hz = 100000;
 
 	//devcfg.spics_io_num=cs;
 	devcfg.spics_io_num=-1;
@@ -153,7 +153,7 @@ void app_main(void)
     	//printf( "Sensor: %d Temp: %12.4f Ratio: %12.4f\n", rtd, tempMAX31865, rtd / 32768.0 * RREF );
     	printf( "Temp: (TMP36) %7.4f (MAX31865) %7.4f\n", tempTMP36, tempMAX31865 );
 
-    	vTaskDelay(2000 / portTICK_PERIOD_MS);
+    	vTaskDelay(5000 / portTICK_PERIOD_MS);
 
     }
 
