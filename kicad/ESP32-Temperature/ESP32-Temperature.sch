@@ -239,9 +239,9 @@ SDA
 Wire Wire Line
 	3650 3300 4250 3300
 Text Notes 3300 5900 0    50   ~ 0
-Red Wire
+Blue Wire
 Text Notes 3300 5100 0    50   ~ 0
-Blue Wires
+Red Wires
 $Comp
 L power:GND #PWR?
 U 1 1 61DAB847
